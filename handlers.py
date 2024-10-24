@@ -12,7 +12,7 @@ import logging
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Send a welcome message when the command /start is issued."""
     await update.message.reply_text(
-        f"{WELCOME_MESSAGE} {update.effective_user.first_name}"
+        f"Здравствуйте, {update.effective_user.first_name}\n\n{WELCOME_MESSAGE}"
     )
 
 
@@ -23,21 +23,21 @@ async def forward_to_group(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif FORWARD_MODE == "personal_account":
         forwarded_msg = await update.message.forward(PERSONAL_ACCOUNT_CHAT_ID)
     else:
-        await update.message.reply_text("Invalid forwarding mode.")
+        await update.message.reply_text("Неподдерживаемый режим пересылки сообщения.")
         return
 
     if forwarded_msg:
         # Store the user_id in the conversation context
         context.bot_data[str(forwarded_msg.message_id)] = update.effective_user.id
         await update.message.reply_text(
-            "Your message has been forwarded. We'll get back to you soon!"
+            "Ваше сообщение переслано команде техподдержки. Ожидайте ответа."
         )
         logging.info(
             f"Forwarded message ID: {forwarded_msg.message_id} from user ID: {update.effective_user.id}"
         )
     else:
         await update.message.reply_text(
-            "Sorry, there was an error forwarding your message. Please try again later."
+            "Произошла ошибка во время пересылки сообщения. Попробуйте еще раз позже."
         )
 
 
@@ -53,23 +53,23 @@ async def forward_to_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if user_id:
             try:
                 await context.bot.send_message(
-                    chat_id=user_id, text=update.message.text
+                    chat_id=user_id, text='Ответ техподдержки:\n\n' + update.message.text
                 )
                 await update.message.reply_text(
-                    "Message sent to the user successfully."
+                    "Сообщение переслано пользователю."
                 )
                 # Clean up the stored user_id
                 del context.bot_data[original_message_id]
             except Exception as e:
                 logging.error(f"Error sending message to user: {str(e)}")
                 await update.message.reply_text(
-                    f"Error sending message to user: {str(e)}"
+                    f"Ощибка во время отправки сообщения пользователю:: {str(e)}"
                 )
         else:
             logging.warning("Could not find the user to reply to.")
-            await update.message.reply_text("Could not find the user to reply to.")
+            await update.message.reply_text("Не удалось найти пользователя, которому необходимо ответить.")
     else:
         logging.warning("This message is not a reply to a forwarded message.")
         await update.message.reply_text(
-            "This message is not a reply to a forwarded message."
+            "Это сообщение не является ответом на пересланное сообщение."
         )

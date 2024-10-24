@@ -1,0 +1,17 @@
+The following .txt is to be slightly altered and used as .env file.
+
+
+TELEGRAM_TOKEN=None  # your bot's token
+TELEGRAM_SUPPORT_CHAT_ID=None # chat_id where the bot will forward all incoming messages
+
+# optional params
+WELCOME_MESSAGE='Это бот техподдержки проекта. Напишите сюда любой вопрос, который Вас беспокоит, и получите ответ от команды техподдержки.'# text of a message that bot will write on /start command
+
+# If user don't allow forward his messages Bot adds his comment with thue user_id to reply
+# Support team must reply to "bot reply", not to original user forwarded message
+# Customize message for support team here:
+REPLY_TO_THIS_MESSAGE="User above doesn\'t allow forwarding his messages. Reply to this message."
+
+# If support reply to forwarded messages with hidded sender, bor warns with next error:
+WRONG_REPLY="User above doesn\'t allow forwarding his messages. You must reply to bot reply under user forwarded message."
+PERSONAL_ACCOUNT_CHAT_ID=None, same as TELEGRAM)_SUPPORT_CHAT_ID # support chat id is duplicated since scaling is not needed
