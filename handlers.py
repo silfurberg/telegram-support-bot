@@ -12,7 +12,7 @@ import logging
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Send a welcome message when the command /start is issued."""
     await update.message.reply_text(
-        f"Здравствуйте, {update.effective_user.first_name}\n\n{WELCOME_MESSAGE}"
+        f"Здравствуйте, {update.effective_user.first_name}\n\n{WELCOME_MESSAGE}!"
     )
 
 
